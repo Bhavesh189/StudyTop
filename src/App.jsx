@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import './App.css'
 import Home from './components/Home.jsx'
-import Registerr from './components/Register.jsx';
 import Login from './components/Login.jsx';
 import Navbar from './components/Navbar.jsx';
 import {createBrowserRouter, Outlet} from 'react-router-dom';
@@ -37,7 +36,12 @@ function App() {
           element : <Account />
         }
       ]
-    }
+    },
+    
+        {
+          path : '/login',
+          element : <Login />
+        }
   ]
   )
 
