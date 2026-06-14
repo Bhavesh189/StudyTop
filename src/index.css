@@ -6,6 +6,9 @@
 }
 
 body {
-    background-color: black;
+    background-color: #050505;
     overflow-x: hidden;
+    -webkit-scrollbar {
+        display: none;
+    }
 }

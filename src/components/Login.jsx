@@ -10,7 +10,8 @@ const Login = () => {
 
   const {
     register,
-    handleSubmit
+    handleSubmit,
+    formState: { errors }
   } = useForm({
     defaultValues: {
       mail: localStorage.getItem("mail") || "",
@@ -121,15 +122,27 @@ const Login = () => {
         <form className="login-form" onSubmit={isLogin ? handleSubmit(loginData) : handleSubmit(sendData)}>
           
           {!isLogin && (
-            <div className="input-group slide-down">
-              <div className="input-icon">{Icons.user}</div>
-              <input type="text" placeholder="Full Name" required {...register('name')}/>
-            </div>
-          )}
+              <>
+                <div className="input-group slide-down">
+                  <div className="input-icon">{Icons.user}</div>
+                  <input 
+                    type="text" 
+                    placeholder="Full Name" 
+                    required 
+                    {...register('name', { 
+                        minLength: { value: 2, message: "Name must be at least 2 characters long" }, 
+                        required: true 
+                    })}
+                  />
+                </div>
+                
+                {errors.name && <p className="error-message">{errors.name.message}</p>}
+              </>
+            )}
 
           <div className="input-group">
             <div className="input-icon">{Icons.email}</div>
-            <input type="email" placeholder="Email address" required {...register('mail')} />
+            <input type="email" placeholder="Email address" required {...register('mail', { required: true })} />
           </div>
 
           <div className="input-group">
@@ -137,8 +150,9 @@ const Login = () => {
             <input 
               type={showPassword ? "text" : "password"} 
               placeholder="Password" 
-              required {...register('pass')}
+              required {...register('pass', { minLength: { value: 6, message: "Password must be at least 6 characters long" }, required: true })}
             />
+            {errors.pass && <p className="error-message">{errors.pass.message}</p>}
             <button 
               type="button" 
               className="password-toggle" 
