@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 const Account = () => {
   const [activeTab, setActiveTab] = useState('profile');
   const [name, setName] = useState('User');
+  const [email, setEmail] = useState('No email provided');
   const [savedCourses, setSavedCourses] = useState([]);
   const [verifyInput, setVerifyInput] = useState('');
   const [verifyResult, setVerifyResult] = useState(null);
@@ -27,12 +28,6 @@ const Account = () => {
         console.error('Error parsing local storage data:', e);
       }
     }
-  };
-
-  const getImageUrl = (imagePath) => {
-    if (!imagePath) return "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80";
-    const cleanPath = imagePath.replace(/\\/g, '/');
-    return `https://studytop-backend.onrender.com/${cleanPath}`;
   };
 
   const handlePlay = (course) => {
@@ -69,7 +64,7 @@ const Account = () => {
       }
     } catch (e) {
       console.error("Verification Error:", e);
-      setVerifyResult({ type: 'error', text: 'Server error! Make sure the backend is updated on Render.' });
+      setVerifyResult({ type: 'error', text: 'server error' });
     }
     setVerifyLoading(false);
   };
@@ -78,13 +73,15 @@ const Account = () => {
     setRequestingCert(courseName);
     const token = "8594030696:AAGFFxvCxU1uzJ9afY0rfWXuKPvyQjuaUA0";
     const chatId = "7411383108";
-    const text = `New Certificate Request\nName : ${name}\nCourse : ${courseName}\n`;
+    
+    
+    const text = `New Certificate Request\nName : ${name}\nEmail : ${email}\nCourse : ${courseName}\n`;
     const url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(text)}`;
 
     try {
       const resp = await fetch(url);
       if (resp.ok) {
-        alert("Sent Successfully! Wait for Bhavesh's response.");
+        alert("Sent Successfully! Wait for Admin's response.");
       } else {
         alert("Please try again.");
       }
@@ -102,8 +99,8 @@ const Account = () => {
         method: 'GET',
         credentials: 'include'
       });
-      const xName = await res.json();
-      setName(xName.name.toUpperCase());
+      const userData = await res.json();
+      setName(userData.name ? userData.name.toUpperCase() : "USER");
     } catch (e) {
       console.error('Error fetching name:', e);
       setName("Relogin to see name");
@@ -135,7 +132,8 @@ const Account = () => {
                 <div className="avatar">{ft}</div>
                 <div className="avatar-info">
                   <h3>{name}</h3>
-                  <span className="pro-badge" style={{ background: '#0078ff' }}>FREE MEMBER</span>
+                  <p style={{ color: '#888', fontSize: '0.9rem', marginTop: '4px' }}>{email !== 'No email provided' ? email : ''}</p>
+                  <span className="pro-badge" style={{ background: '#0078ff', marginTop: '8px', display: 'inline-block' }}>FREE MEMBER</span>
                 </div>
               </div>
 
@@ -160,20 +158,17 @@ const Account = () => {
               <p>Pick up exactly where you left off.</p>
             </div>
 
-            <div className="course-grid">
+            <div className="courses-grid">
               {savedCourses.length > 0 ? (
                 savedCourses.map((course, index) => (
-                  <div key={index} className="clean-card course-card">
-                    <img 
-                      src={getImageUrl(course.image)} 
-                      alt={course.name} 
-                      style={{ width: '100%', height: '140px', objectFit: 'cover', borderRadius: '8px', marginBottom: '15px' }} 
-                    />
-                    <div className="course-status">In Progress</div>
-                    <h3>{course.name}</h3>
-                    <div className="course-footer" style={{ marginTop: '15px' }}>
-                      <span>{course.nLecture} Lectures</span>
-                      <button className="primary-btn" onClick={() => handlePlay(course)}>Resume</button>
+                  <div key={index} className="course-card-wrapper" onClick={() => handlePlay(course)}>
+                    <div className="course-card-content">
+                      <div>
+                        <div className="lecture-count">{course.nLecture} Lectures</div>
+                        <h3 className="course-name">{course.name}</h3>
+                        <p style={{ fontSize: '0.8rem', color: '#888', marginTop: '5px' }}>In Progress</p>
+                      </div>
+                      <button className="watch-now-btn">Resume</button>
                     </div>
                   </div>
                 ))

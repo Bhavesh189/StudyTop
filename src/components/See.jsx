@@ -53,7 +53,8 @@ const See = () => {
           <h1 className="see-course-title">{courseData.name}</h1>
         </div>
         
-        <div className="see-nav-right">
+        {/* Desktop pe sidebar toggle karne ke liye menu button, mobile pe hide ho jayega */}
+        <div className="see-nav-right desktop-menu-btn">
           <button className="icon-btn menu-btn" onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
             {isSidebarOpen ? Icons.close : Icons.menu}
           </button>
@@ -88,7 +89,7 @@ const See = () => {
                 className={`tab-btn ${activeTab === 'qna' ? 'active' : ''}`}
                 onClick={() => setActiveTab('qna')}
               >
-                Q&A
+                Q&A (AI Assistant)
               </button>
             </div>
 
@@ -100,9 +101,12 @@ const See = () => {
                 </div>
               )}
               {activeTab === 'qna' && (
-                <div className="qna-content fade-in">
-                  <p>No questions asked yet for this lecture.</p>
-                  <button className="ask-btn">Ask a Question</button>
+                <div className="qna-content fade-in" style={{ height: '600px', width: '100%', padding: '0' }}>
+                  <iframe 
+                    src="https://bhavesh189.github.io/DocAna/" 
+                    title="DocAna Chat"
+                    style={{ width: '100%', height: '100%', border: 'none', borderRadius: '12px', backgroundColor: '#fff' }}
+                  ></iframe>
                 </div>
               )}
             </div>
