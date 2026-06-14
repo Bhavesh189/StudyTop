@@ -181,15 +181,6 @@ const Login = () => {
           <span>or continue with</span>
         </div>
 
-        <div className="social-login-grid">
-          <button type="button" className="social-btn">
-            {Icons.google} <span>Google</span>
-          </button>
-          <button type="button" className="social-btn">
-            {Icons.github} <span>GitHub</span>
-          </button>
-        </div>
-
       </div>
     </div>
   );
