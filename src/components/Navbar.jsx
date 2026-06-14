@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useEffect } from 'react'
 
 const Navbar = () => {
 
@@ -20,6 +21,17 @@ const Navbar = () => {
     navigate(path);
     setOpen(false);
   }
+
+   useEffect(() => {
+    const res = fetch('https://studytop-backend.onrender.com/check', {
+      method: 'get',
+      credentials: 'include'
+    });
+    if (res.f == "n") {
+      navigate("/login");
+    }
+  }, [navigate]);
+
 
 
   return (

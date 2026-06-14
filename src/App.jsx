@@ -8,6 +8,8 @@ import { RouterProvider } from 'react-router-dom';
 import Account from './components/Account.jsx';
 import Courses from './components/Courses.jsx';
 import { useNavigate } from 'react-router-dom';
+import See from './components/See.jsx'
+import Add from './components/Add.jsx';
 
 function App() {
 
@@ -34,6 +36,10 @@ function App() {
         {
           path : '/account',
           element : <Account />
+        },
+        {
+          path : '/see',
+          element : <See />
         }
       ]
     },
@@ -41,6 +47,14 @@ function App() {
         {
           path : '/login',
           element : <Login />
+        },
+        {
+          path : '/add',
+          element : <Add />
+        },
+        {
+          path : '*',
+          element : <h1 style={{color : "white", textAlign : "center", marginTop : "20vh"}}>404 Not Found</h1>
         }
   ]
   )

@@ -10,22 +10,24 @@ const Login = () => {
 
   const {
     register,
-    handleSubmit,
-    watch,
-    reset,
-    formState : {errors}
-  } = useForm();
+    handleSubmit
+  } = useForm({
+    defaultValues: {
+      mail: localStorage.getItem("mail") || "",
+      pass: localStorage.getItem("pass") || ""
+    }
+  }); 
 
   async function sendData(data) {
       try {
-        const url = 'http://localhost:3000/create';
+        const url = 'https://studytop-backend.onrender.com/create';
         const sData = {
           name : data.name,
           email : data.mail,
           pass : data.pass
         }
 
-        const res = await fetch('http://localhost:3000/create', {
+        const res = await fetch(url, {
           method : 'POST',
           headers : {
             'Content-Type' : 'application/json'
@@ -33,34 +35,48 @@ const Login = () => {
           body : JSON.stringify(sData)
         });
 
-        alert("Sign Up Successfull : Login Now");
+        const ress = await res.json();
+
+        if(ress.c === "n") {
+          alert("Email Already Exists. Please login.");
+          navigate('/login');
+          return;
+        }
+
+        alert("Sign Up Successful. Please login.");
         navigate('/login');
       } catch(e) {
         console.error('Error:', e);
-        alert('Cant Be SEnd')
+        alert('Cannot send data.')
       }
   }
 
   async function loginData(data) {
     try {
-      const res = await fetch('http://localhost:3000/login', {
+      const sdata = {
+        email : data.mail,
+        pass : data.pass
+      }
+      localStorage.setItem("mail", data.mail);
+      localStorage.setItem("pass", data.pass);
+      const res = await fetch('https://studytop-backend.onrender.com/login', {
         method : 'POST',
+        credentials: 'include',
         headers : {
           'Content-Type' : 'application/json'
         },
-        body : JSON.stringify(data)
+        body : JSON.stringify(sdata)
       });
-      if(res.ok) {
-        alert("Login Successfull");
-        const x = await res.text();
-        localStorage.setItem("mail", x)
+      const ress = await res.json();
+      if(ress.l === "h") {
+        alert("Login Successful.");
         navigate('/');
       } else {
-        alert("Invalid Email or Password");
+        alert("Invalid Email or Password.");
       }
     } catch(e) {
       console.error('Error:', e);
-      alert('Cant Be SEnd')
+      alert('Cannot send data.')
     }
   }
 
@@ -113,7 +129,7 @@ const Login = () => {
 
           <div className="input-group">
             <div className="input-icon">{Icons.email}</div>
-            <input type="email" placeholder="Email address" required {...register('mail')}/>
+            <input type="email" placeholder="Email address" required {...register('mail')} />
           </div>
 
           <div className="input-group">
