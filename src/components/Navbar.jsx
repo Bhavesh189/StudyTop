@@ -6,12 +6,14 @@ import { faBars, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
+import Preloader from './Preloader'
 
 const Navbar = () => {
 
   const navigate = useNavigate();
 
   const [isOpen, setOpen] = useState(false);
+  const [change, isChange] = useState(false)
 
   function handleClick() {
     setOpen(prev => !prev);
@@ -35,6 +37,9 @@ const Navbar = () => {
 
 
   return (
+    <>
+    <Preloader key={location.pathname}/>
+    
     <div className='nav'>
       <img src={logo} alt="Logo" />
 
@@ -43,10 +48,17 @@ const Navbar = () => {
       
       <ul  style={{right : isOpen ? "0" : "-70%"}}>
         <li onClick={()=> navi('/')}>Home</li>
-        <li onClick={()=> navi('/courses')}>Courses</li>
-        <li onClick={()=> navi('/account')}>Account</li>
+        <li onClick={()=> {
+          navi('/courses')
+          isChange(prev => !prev)
+        }}>Courses</li>
+        <li onClick={()=> {
+          navi('/account')
+          isChange(prev => !prev)
+        }}>Account</li>
       </ul>
     </div>
+  </>
   )
 }
 

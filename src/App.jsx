@@ -10,6 +10,7 @@ import Courses from './components/Courses.jsx';
 import { useNavigate } from 'react-router-dom';
 import See from './components/See.jsx'
 import Add from './components/Add.jsx';
+import Preloader from './components/Preloader.jsx';
 
 function App() {
 
@@ -67,7 +68,7 @@ function App() {
     <>
     <RouterProvider router={routes}>
     <Navbar/>
-    </RouterProvider>
+    </RouterProvider>    
     </>
   )
 }
